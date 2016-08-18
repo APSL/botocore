@@ -315,7 +315,13 @@ def percent_encode(input_str, safe=SAFE_CHARS):
     """
     if not isinstance(input_str, string_types):
         input_str = text_type(input_str)
-    return quote(text_type(input_str).encode('utf-8'), safe=safe)
+    try:
+        text = text_type(input_str).encode('utf-8')
+    except UnicodeDecodeError:
+        text = input_str
+
+    encoded = quote(text, safe=safe)
+    return encoded
 
 
 def parse_timestamp(value):
